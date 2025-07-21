@@ -1,3 +1,4 @@
+from collections import namedtuple
 from enum import Enum
 
 class Specie(str, Enum):
@@ -16,3 +17,5 @@ class GranuMode(Enum):
 
 class CamsVersion(str, Enum):
     pass
+
+LogNormalMP = namedtuple("MicroParams", ["rm", "sigma", "mr", "mi"])
