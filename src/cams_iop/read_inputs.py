@@ -1,3 +1,6 @@
+# -------------------------------------------------------------------------------------------------
+# Imports
+# -------------------------------------------------------------------------------------------------
 from structs import Specie, CamsVersion, GranuMode, GranuloLN
 from main import DATA_DIR, TMP_DIR, np64
 from typing import Tuple
@@ -7,6 +10,9 @@ import json
 import os
 
 
+# -------------------------------------------------------------------------------------------------
+# Input data readers and formatters
+# -------------------------------------------------------------------------------------------------
 def read_json_from_data(file_name: str) -> None:
     data_path: str = os.path.join(DATA_DIR, file_name)
     try:
@@ -162,6 +168,9 @@ def _write_refractive_index_file(
     return filepath
 
 
+# -------------------------------------------------------------------------------------------------
+# Test cases
+# -------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     a, b = read_granulometry(Specie.DUST_CAMS, GranuMode.BI_MODAL, rh=90, wl_nm=400.0)
     print(a, b)
