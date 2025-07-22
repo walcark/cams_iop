@@ -1,6 +1,7 @@
 from numpy.typing import NDArray
 from pathlib import Path
 import numpy as np
+import logging
 
 # -------------------------------------------------------------------------------------------------
 # Module-level constants
@@ -20,9 +21,8 @@ WLS = np.array([
     250, 300, 350, 400, 450, 500, 
     550, 600, 650, 700, 750, 800, 
     900, 1000, 1250, 1500, 1750, 
-    2000, 2500, 3000, 3200, 3390, 
-    3500, 3750, 4000, 4500
-])/1E3
+    2000, 2250
+])
 
 RHS = np.array([
     0, 10, 20, 30, 40, 50, 
@@ -32,3 +32,24 @@ RHS = np.array([
 np64 = NDArray[np.float64]
 np32 = NDArray[np.float32]
 int64 = NDArray[np.int64]
+
+def get_logger(
+    name: str = "LauncherSOS", 
+    level: int = logging.INFO
+) -> logging.Logger:
+    """
+    Setup a local logger for a given module.
+    """
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+
+    if not logger.hasHandlers():
+        formatter = logging.Formatter(
+            "[%(asctime)s][%(name)s]: %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S"
+        )
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
+
+    return logger
