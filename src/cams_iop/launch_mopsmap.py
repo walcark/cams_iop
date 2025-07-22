@@ -107,36 +107,35 @@ def create_lut_for_smartg(
         phase_arr[:, :, :, idx] = np.float64(xrds["phase"].isel(nreff=0).to_numpy())
         ext_arr[:, idx] = xrds["ext"].isel(nreff=0).to_numpy()
         ssa_arr[:, idx] = xrds["ssa"].isel(nreff=0).to_numpy()
-    
+   
     phase_darr = xr.DataArray(
-        phase_arr, 
-        coords={"wav": wls_final, "theta": theta_final, "hum": hum_final},
-        dims=["wav", "stk", "theta", "hum"]
+        np.moveaxis(phase_arr, [0, 1, 2, 3], [1, 2, 3, 0]), 
+        coords={"theta": theta_final, "wav": wls_final, "hum": hum_final},
+        dims=["hum", "wav", "stk", "theta"]
     )
 
     ext_darr = xr.DataArray(
-        ext_arr,
-        coords={"wav": wls_final, "hum": hum_final},
-        dims=["wav", "hum"]        
+        np.swapaxes(ext_arr, 0, 1),
+        coords={"hum": hum_final, "wav": wls_final},
+        dims=["hum", "wav"]        
     )
 
     ssa_darr = xr.DataArray(
-        ssa_arr,
-        coords={"wav": wls_final, "hum": hum_final},
-        dims=["wav", "hum"]        
+        np.swapaxes(ssa_arr, 0, 1),
+        coords={"hum": hum_final, "wav": wls_final},
+        dims=["hum", "wav"]        
     )
 
     dataset: xr.Dataset = xr.Dataset(
-        {"phase": phase_darr, "ssa": ssa_darr, "ext": ext_darr},
+        {"phase": phase_darr, "ext": ext_darr, "ssa": ssa_darr},
         attrs = {
-            "hum" : 0.0,
             "name": specie.value,
-            "H_mix_min": 0.0,
-            "H_mix_max": 2.0,
-            "H_stra_min": 0.0,
-            "H_stra_max": 0.0,
-            "H_free_min": 0.0,
-            "H_free_max": 0.0,
+            "H_mix_min": 0,
+            "H_mix_max": 99,
+            "H_stra_min": 0,
+            "H_stra_max": 0,
+            "H_free_min": 0,
+            "H_free_max": 0,
             "Z_mix": 2.0,
             "Z_free": 0.0,
             "Z_stra": 0.0,
@@ -155,7 +154,7 @@ if __name__ == "__main__":
     ds = create_lut_for_smartg(Specie.AMMONIUM_CAMS, GranuMode.BI_MODAL)
     fig, ax = plt.subplots(figsize=(6.8, 4.8))
     for wl in [400, 500, 600, 700, 800, 900]:
-        phase = ds["phase"].interp(wav=wl, hum=50, stck=0).data
+        phase = ds["phase"].interp(wav=wl, hum=50, stk=0).data
         angles = ds["theta"]
         plt.plot(angles, phase)
 
