@@ -43,7 +43,6 @@ def read_granulometry(
     specie: Specie,
     mode: GranuMode,
     rh: float,
-    wl_nm: float,
     cams_version: str = "49r1",
 ) -> Tuple[GranuloLN, GranuloLN]:
     """
@@ -59,8 +58,6 @@ def read_granulometry(
             the granulometry type (Mono or Bi-Modal)
         rh (float):
             the relative humidity
-        wls_nm (List[float]):
-            the list of wavelengths (in nm)
         cams_version (str):
             the CAMS version of the granulometry   
 
@@ -76,8 +73,8 @@ def read_granulometry(
         raise FileNotFoundError(f"Unable to open file: {data_path}") from e 
 
     xrds_sel = xrds.sel(aerosols_species=specie.value, cams_versions=cams_version)
-    values = xrds_sel.interp(relative_humidity=rh, wavelength=wl_nm)   
-    print(values)
+    values = xrds_sel.interp(relative_humidity=rh)   
+
     gnl_f: GranuloLN = GranuloLN(rm=float(values[f'rmodal_f'].data),
                                  sigma=float(values[f'lnvar_f'].data))
     if (mode == GranuMode.MONO_MODAL):
