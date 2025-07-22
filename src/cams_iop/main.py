@@ -1,3 +1,4 @@
+from numpy.typing import NDArray
 from pathlib import Path
 import numpy as np
 
@@ -27,3 +28,7 @@ RHS = np.array([
     0, 10, 20, 30, 40, 50, 
     60, 70, 80, 85, 90, 95
 ])
+
+np64 = NDArray[np.float64]
+np32 = NDArray[np.float32]
+int64 = NDArray[np.int64]

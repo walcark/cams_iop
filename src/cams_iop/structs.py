@@ -18,4 +18,4 @@ class GranuMode(Enum):
 class CamsVersion(str, Enum):
     pass
 
-LogNormalMP = namedtuple("MicroParams", ["rm", "sigma", "mr", "mi"])
+GranuloLN = namedtuple("GranuloLN", ["rm", "sigma"])
