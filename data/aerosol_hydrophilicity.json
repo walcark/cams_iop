@@ -1,0 +1,11 @@
+{
+    "zero_deux": false,
+    "dust": false,
+    "black_carbon": false,
+    "sulphate": true,
+    "organic_matter": true,
+    "sea_salt": true,
+    "nitrate": true,
+    "ammonium": true,
+    "SOA": true
+  }
